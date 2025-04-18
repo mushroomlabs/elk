@@ -55,7 +55,7 @@ export function getInstanceDomain(instance: ElkInstance) {
 }
 
 export const publicServer = ref('')
-export const currentServer = computed<string>(() => currentUser.value?.server || publicServer.value)
+export const currentServer = computed<string>(() => currentUser.value?.server || '')
 
 export const currentNodeInfo = computed<null | Record<string, any>>(() => nodes.value[currentServer.value] || null)
 export const isGotoSocial = computed(() => currentNodeInfo.value?.software?.name === 'gotosocial')
@@ -75,7 +75,6 @@ export async function loginTo(
   user: Overwrite<UserLogin, { account?: mastodon.v1.AccountCredentials }>,
 ) {
   const { client } = masto
-  const instance = mastoLogin(masto, user)
 
   // GoToSocial only API
   const url = `https://${user.server}`
@@ -84,8 +83,6 @@ export async function loginTo(
   }).catch(() => undefined)
 
   if (!user?.token) {
-    publicServer.value = user.server
-    publicInstance.value = instance
     return
   }
 

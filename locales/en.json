@@ -749,6 +749,7 @@
   },
   "user": {
     "add_existing": "Add an existing account",
+    "public_timeline": "Public Timeline",
     "server_address_label": "Mastodon Server Address",
     "sign_in_desc": "Sign in to follow profiles or hashtags, favorite, share and reply to posts, or interact from your account on a different server.",
     "sign_in_notice_title": "Viewing {0} public data",
@@ -766,5 +767,11 @@
     "public_desc": "Visible for all",
     "unlisted": "Unlisted",
     "unlisted_desc": "Visible for all, but opted-out of discovery features"
+  },
+  "welcome": {
+    "add_account": "Add Account",
+    "browse_public": "Browse Public Timeline",
+    "description": "A social web browser. Add an account to interact or browse the public timeline.",
+    "title": "Welcome to Elk"
   }
 }

@@ -20,19 +20,19 @@ function handleAuth(to: RouteLocationNormalized) {
       if (currentUser.value)
         return navigateTo('/notifications')
       else
-        return navigateTo(`/${currentServer.value}/public/local`)
+        return navigateTo('/')
     }
 
     // Installed PWA shortcut to local
     if (to.query['local-pwa-shortcut'] !== undefined)
-      return navigateTo(`/${currentServer.value}/public/local`)
+      return navigateTo('/')
   }
 
   if (!currentUser.value) {
     if (to.path === '/home' && to.query['share-target'] !== undefined)
       return navigateTo('/share-target')
-    else
-      return navigateTo(`/${currentServer.value}/public/local`)
+    else if (to.path === '/')
+      return navigateTo('/')
   }
 
   if (to.path === '/')
