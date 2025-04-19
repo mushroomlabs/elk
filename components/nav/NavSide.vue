@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { STORAGE_KEY_LAST_ACCESSED_EXPLORE_ROUTE, STORAGE_KEY_LAST_ACCESSED_NOTIFICATION_ROUTE } from '~/constants'
+import { STORAGE_KEY_LAST_ACCESSED_NOTIFICATION_ROUTE } from '~/constants'
 
 defineProps<{
   command?: boolean
@@ -7,7 +7,6 @@ defineProps<{
 const { notifications } = useNotifications()
 const useStarFavoriteIcon = usePreferences('useStarFavoriteIcon')
 const lastAccessedNotificationRoute = useLocalStorage(STORAGE_KEY_LAST_ACCESSED_NOTIFICATION_ROUTE, '')
-const lastAccessedExploreRoute = useLocalStorage(STORAGE_KEY_LAST_ACCESSED_EXPLORE_ROUTE, '')
 
 const notificationsLink = computed(() => {
   const hydrated = isHydrated.value
@@ -18,20 +17,6 @@ const notificationsLink = computed(() => {
   }
 
   return `/notifications/${lastRoute}`
-})
-const exploreLink = computed(() => {
-  const hydrated = isHydrated.value
-  const server = currentServer.value
-  let lastRoute = lastAccessedExploreRoute.value
-  if (!hydrated) {
-    return '/explore'
-  }
-
-  if (lastRoute.length) {
-    lastRoute = `/${lastRoute}`
-  }
-
-  return server ? `/${server}/explore${lastRoute}` : `/explore${lastRoute}`
 })
 </script>
 
@@ -59,8 +44,6 @@ const exploreLink = computed(() => {
     <NavSideItem :text="$t('action.compose')" to="/compose" icon="i-ri:quill-pen-line" user-only :command="command" />
 
     <div class="spacer" shrink hidden sm:block />
-    <NavSideItem :text="$t('nav.explore')" :to="exploreLink" icon="i-ri:compass-3-line" :command="command" />
-    <NavSideItem :text="$t('nav.federated')" :to="isHydrated ? `/${currentServer}/public` : '/public'" icon="i-ri:earth-line" :command="command" />
     <NavSideItem :text="$t('nav.lists')" :to="isHydrated ? `/${currentServer}/lists` : '/lists'" icon="i-ri:list-check" user-only :command="command" />
     <NavSideItem :text="$t('nav.hashtags')" to="/hashtags" icon="i-ri:hashtag" user-only :command="command" />
 
