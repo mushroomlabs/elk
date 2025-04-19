@@ -80,6 +80,7 @@ export default defineNuxtConfig({
       './composables/push-notifications',
       './composables/settings',
       './composables/tiptap/index.ts',
+      './composables/identity',
     ],
     imports: [{
       name: 'useI18n',

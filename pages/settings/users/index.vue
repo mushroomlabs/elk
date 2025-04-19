@@ -1,7 +1,6 @@
 <script setup lang="ts">
 /* eslint-disable no-alert */
-import type { UserLogin } from '~/types'
-import { fileOpen } from 'browser-fs-access'
+import IdentityList from '~/components/identity/IdentityList.vue'
 
 const { t } = useI18n()
 
@@ -29,40 +28,6 @@ async function exportTokens() {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' })
   saveAs(blob, `elk-users-tokens-${new Date().toISOString().slice(0, 10)}.json`)
 }
-
-async function importTokens() {
-  if (import.meta.server)
-    return
-  const file = await fileOpen({
-    description: 'Token File',
-    mimeTypes: ['application/json'],
-  })
-
-  try {
-    const content = await file.text()
-    const data = JSON.parse(content)
-    if (data.version !== 1)
-      throw new Error('Invalid version')
-    const users = data.users as UserLogin[]
-    const newUsers: UserLogin[] = []
-    for (const user of users) {
-      if (loggedInUsers.value.some(u => u.server === user.server && u.account.id === user.account.id))
-        continue
-      newUsers.push(user)
-    }
-    if (newUsers.length === 0) {
-      alert('No new users found')
-      return
-    }
-    if (!confirm(`Found ${newUsers.length} new users, are you sure you want to import them?`))
-      return
-    loggedInUsers.value = [...loggedInUsers.value, ...newUsers]
-  }
-  catch (e) {
-    console.error(e)
-    alert('Invalid Elk tokens file')
-  }
-}
 </script>
 
 <template>
@@ -73,10 +38,19 @@ async function importTokens() {
       </div>
     </template>
     <div p6>
+      <div class="mb-6">
+        <IdentityList />
+      </div>
+
       <template v-if="loggedInUsers.length">
-        <div flex="~ col gap2">
-          <div v-for="user of loggedInUsers" :key="user.account.id">
-            <AccountInfo :account="user.account" :hover-card="false" />
+        <div class="mb-4">
+          <h2 class="text-xl font-bold mb-4">
+            Elk Platform Users
+          </h2>
+          <div flex="~ col gap2">
+            <div v-for="user of loggedInUsers" :key="user.account.id">
+              <AccountInfo :account="user.account" :hover-card="false" />
+            </div>
           </div>
         </div>
         <div my4 border="t base" />
@@ -85,10 +59,6 @@ async function importTokens() {
           {{ $t('settings.users.export') }}
         </button>
       </template>
-      <button btn-text flex="~ gap-2" items-center @click="importTokens">
-        <span block i-ri-upload-2-line />
-        {{ $t('settings.users.import') }}
-      </button>
     </div>
   </MainContent>
 </template>

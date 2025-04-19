@@ -6,11 +6,6 @@ const info = useBuildInfo()
 
 const wideLayout = computed(() => route.meta.wideLayout ?? false)
 
-const showUserPicker = logicAnd(
-  usePreferences('experimentalUserPicker'),
-  () => useUsers().value.length > 1,
-)
-
 const isGrayscale = usePreferences('grayscaleMode')
 </script>
 
@@ -26,24 +21,7 @@ const isGrayscale = usePreferences('grayscaleMode')
               <div flex-auto />
               <div v-if="isHydrated" flex flex-col sticky bottom-0 bg-base>
                 <div hidden xl:block>
-                  <UserSignInEntry v-if="!currentUser" />
-                </div>
-                <div v-if="currentUser" p6 pb8 w-full>
-                  <div hidden xl-block>
-                    <UserPicker v-if="showUserPicker" />
-                    <div v-else flex="~" items-center justify-between>
-                      <NuxtLink
-                        hidden xl:block
-                        rounded-3 text-primary text-start w-full
-                        hover:bg-active cursor-pointer transition-100
-                        :to="getAccountRoute(currentUser.account)"
-                      >
-                        <AccountInfo :account="currentUser.account" md:break-words square />
-                      </NuxtLink>
-                      <UserDropdown />
-                    </div>
-                  </div>
-                  <UserDropdown xl:hidden />
+                  <IdentityPanel />
                 </div>
               </div>
             </div>
