@@ -1,4 +1,5 @@
 import type { BuildInfo } from './types'
+import path from 'node:path'
 import { createResolver, useNuxt } from '@nuxt/kit'
 import { resolveModulePath } from 'exsolve'
 import { isCI, isDevelopment, isWindows } from 'std-env'
@@ -88,6 +89,12 @@ export default defineNuxtConfig({
     injectAtEnd: true,
   },
   vite: {
+    resolve: {
+      alias: {
+        // Add an alias for ap-sdk to point to its source directory
+        'ap-sdk': path.resolve(__dirname, '../ap-sdk/src'),
+      },
+    },
     define: {
       'process.env.VSCODE_TEXTMATE_DEBUG': 'false',
       'process.mock': ((!isCI || isPreview) && process.env.MOCK_USER) || 'false',
@@ -135,6 +142,7 @@ export default defineNuxtConfig({
         'workbox-strategies',
         'workbox-expiration',
       ],
+      exclude: ['ap-sdk'],
     },
   },
   postcss: {

@@ -121,6 +121,16 @@ ni
 nr dev
 ```
 
+### AP-SDK Development
+
+When developing with the integrated ActivityPub SDK, you can use the following command to enable hot module reloading for both Elk and the ap-sdk:
+
+```
+nr dev:sdk
+```
+
+This runs both Elk in dev mode and ap-sdk in watch mode, so any changes to the SDK will be immediately reflected in Elk.
+
 ### Testing
 
 Elk uses [Vitest](https://vitest.dev). You can run the test suite with:
