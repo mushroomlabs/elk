@@ -90,6 +90,13 @@ export default defineNuxtConfig({
     injectAtEnd: true,
   },
   vite: {
+    server: {
+      headers: {
+        'Cross-Origin-Opener-Policy': 'same-origin',
+        'Cross-Origin-Embedder-Policy': 'require-corp',
+      },
+    },
+    assetsInclude: ['**/*.wasm'],
     resolve: {
       alias: {
         // Add an alias for ap-sdk to point to its source directory
@@ -143,7 +150,7 @@ export default defineNuxtConfig({
         'workbox-strategies',
         'workbox-expiration',
       ],
-      exclude: ['ap-sdk'],
+      exclude: ['ap-sdk', '@sqlite.org/sqlite-wasm'],
     },
   },
   postcss: {
