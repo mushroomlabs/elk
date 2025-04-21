@@ -12,6 +12,7 @@ const { resolve } = createResolver(import.meta.url)
 const mockProxy = resolveModulePath('mocked-exports/proxy', { from: import.meta.url })
 
 export default defineNuxtConfig({
+  ssr: false,
   compatibilityDate: '2024-09-11',
   typescript: {
     tsConfig: {
